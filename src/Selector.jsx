@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect , useState } from 'react'
 import { bandCases, watchCases } from 'constant'
 
 function Selector() {
@@ -9,7 +9,7 @@ function Selector() {
         className="rf-designstudio-casesmat r-fade-transition-enter-done"
         data-autom="casesmat"
       >
-        <div className="rf-designstudio-scroller rf-designstudio-horizontal-platter">
+        <div className="rf-designstudio-scroller rf-designstudio-horizontal-platter mt-10">
           <DynamicScrollerGrid />
           <PrevNextButton />
         </div>
@@ -98,54 +98,135 @@ function Selector() {
 
 export default Selector
 
-
-function DynamicScrollerGrid () {
+function DynamicScrollerGrid() {
   // State for selected items and mode
-  const [selectedCase, setSelectedCase] = React.useState(watchCases[0]);
-  const [selectedBand, setSelectedBand] = React.useState(bandCases[0]);
-  const [mode, setMode] = React.useState('case'); // 'case' or 'band'
+  const [selectedCaseIndex, setSelectedCaseIndex] = React.useState(0)
+  const [selectedBandIndex, setSelectedBandIndex] = React.useState(0)
+  const [mode, setMode] = React.useState('case') // 'case' or 'band'
+  const scrollerRef = React.useRef(null) // Ref for the scroller container
+  const [isAnimating, setIsAnimating] = useState(false)
 
-  // Combined data based on mode
+  const selectedCase = watchCases[selectedCaseIndex]
+  const selectedBand = bandCases[selectedBandIndex]
+
+  const handleModeChange = (newMode) => {
+    setIsAnimating(true) // Start animation
+    setTimeout(() => {
+      setMode(newMode)
+      setIsAnimating(false) // End animation after transition
+    }, 300) // Duration matches CSS transition time
+  }
+
+  useEffect(() => {
+    console.log({ selectedBandIndex })
+  }, [selectedBandIndex])
+
+  useEffect(() => {
+    console.log({ selectedCaseIndex })
+  }, [selectedCaseIndex])
+
   const getScrollerData = () => {
-    return mode === 'case' ? {
-      items: watchCases,
-      ariaLabel: "Choose your watch case",
-      imageClass: "rf-designstudio-caseimage",
-      setSelected: setSelectedCase
-    } : {
-      items: bandCases,
-      ariaLabel: "Choose your watch band",
-      imageClass: "rf-designstudio-bandsimage",
-      setSelected: setSelectedBand
-    };
-  };
+    return mode === 'case'
+      ? {
+          items: watchCases,
+          ariaLabel: 'Choose your watch case',
+          imageClass: 'rf-designstudio-caseimage',
+          selectedIndex: selectedCaseIndex,
+          setSelectedIndex: setSelectedCaseIndex
+        }
+      : {
+          items: bandCases,
+          ariaLabel: 'Choose your watch band',
+          imageClass: 'rf-designstudio-bandsimage',
+          selectedIndex: selectedBandIndex,
+          setSelectedIndex: setSelectedBandIndex
+        }
+  }
 
-  const scrollerData = getScrollerData();
+  const scrollerData = getScrollerData()
+
+  const handleScroll = () => {
+    const scroller = scrollerRef.current
+    if (!scroller) return
+
+    const scrollerRect = scroller.getBoundingClientRect()
+    const centerX = scrollerRect.left + scrollerRect.width / 2
+
+    let closestIndex = -1
+    let minDistance = Infinity
+
+    scroller
+      .querySelectorAll('[data-core-scroller-item]')
+      .forEach((item, index) => {
+        const itemRect = item.getBoundingClientRect()
+        const itemCenterX = itemRect.left + itemRect.width / 2
+
+        const distance = Math.abs(centerX - itemCenterX)
+        if (distance < minDistance) {
+          minDistance = distance
+          closestIndex = index
+        }
+      })
+
+    if (closestIndex > -1 && closestIndex !== scrollerData.selectedIndex) {
+      scrollerData.setSelectedIndex(closestIndex)
+    }
+  }
+
+  React.useEffect(() => {
+    const scroller = scrollerRef.current
+    if (scroller) {
+      scroller.addEventListener('scroll', handleScroll)
+      return () => scroller.removeEventListener('scroll', handleScroll)
+    }
+  }, [mode, scrollerData])
+
+  // Scroll into view when mode changes or selected index changes
+  React.useEffect(() => {
+    const scroller = scrollerRef.current
+    if (!scroller) return
+
+    const items = scroller.querySelectorAll('[data-core-scroller-item]')
+    const selectedIndex = scrollerData.selectedIndex
+
+    if (items[selectedIndex]) {
+      items[selectedIndex].scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center'
+      })
+    }
+  }, [mode])
 
   return (
-    <div className="relative">
-      {/* Mode switcher */}
-
-
+    <div
+      key={mode} // Forces a re-render for fade effect
+      className={`relative transition-opacity duration-300 ${
+        isAnimating ? 'opacity-0' : 'opacity-100'
+      }`}
+    >
       {/* Scroller */}
       <div className="rf-designstudio-scroller-crop">
         <div
           data-core-scroller=""
           data-core-scroller-customsnap=""
           aria-label={scrollerData.ariaLabel}
-          style={{ overflowX: 'scroll' }}
+          style={{
+            overflowX: 'scroll',
+            scrollBehavior: 'smooth',
+            scrollSnapType: 'x mandatory'
+          }}
+          ref={scrollerRef}
         >
           <div data-core-scroller-platter="" role="radiogroup">
             {scrollerData.items.map((item, index) => (
               <div key={index} data-core-scroller-item="">
                 <button
                   className={`rf-designstudio-scroller-item ${
-                    (mode === 'case' ? selectedCase : selectedBand) === item
+                    scrollerData.selectedIndex === index
                       ? 'rf-designstudio-scroller-currentitem'
                       : ''
                   }`}
                   type="button"
-                  onClick={() => scrollerData.setSelected(item)}
                 >
                   <img
                     width="500"
@@ -172,7 +253,9 @@ function DynamicScrollerGrid () {
         <img
           alt=""
           className={`rf-designstudio-topimage ${
-            mode === 'case' ? 'rf-designstudio-bandimage' : 'rf-designstudio-caseimage'
+            mode === 'case'
+              ? 'rf-designstudio-bandimage'
+              : 'rf-designstudio-caseimage'
           }`}
           aria-hidden="true"
           width="500"
@@ -181,10 +264,9 @@ function DynamicScrollerGrid () {
         />
       </div>
 
-
-      <div className="mb-4 flex gap-4">
+      <div className="mb-4 flex gap-4 mx-auto w-44">
         <button
-          onClick={() => setMode('case')}
+          onClick={() => handleModeChange('case')}
           className={`px-4 py-2 rounded ${
             mode === 'case' ? 'bg-blue-500 text-white' : 'bg-gray-200'
           }`}
@@ -192,7 +274,7 @@ function DynamicScrollerGrid () {
           Case Selection
         </button>
         <button
-          onClick={() => setMode('band')}
+          onClick={() => handleModeChange('band')}
           className={`px-4 py-2 rounded ${
             mode === 'band' ? 'bg-blue-500 text-white' : 'bg-gray-200'
           }`}
@@ -201,9 +283,8 @@ function DynamicScrollerGrid () {
         </button>
       </div>
     </div>
-  );
-};
-
+  )
+}
 
 function PrevNextButton() {
   return (
