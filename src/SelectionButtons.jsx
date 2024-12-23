@@ -80,6 +80,7 @@ export default function SelectionButtons({ buttonsData = [] }) {
             label={button.label}
             dataAutom={button.dataAutom}
             options={button.options}
+            handleClick={button.handleClick}
           />
         ))}
       </div>

@@ -237,3 +237,27 @@ export const collections = [
   "Apple Watch Hermès Series 10",
   "Apple Watch SE"
 ];
+
+
+
+export const bandIconChildOptions = [
+  { value: 'stainless', label: 'Stainless Steel' },
+  { value: 'sportloop', label: 'Sport Loop' },
+  { value: 'fluoroelastomer', label: 'Sport Band', selected: true },
+  { value: 'finewoven', label: 'FineWoven' },
+  { value: 'polyyarnsiliconethread', label: 'Braided Solo Loop' },
+  { value: 'liquidsiliconerubber', label: 'Solo Loop' },
+  { value: 'nikesportloop', label: 'Nike Sport Loop' },
+  { value: 'nikesportband', label: 'Nike Sport Band' }
+]
+
+export const caseIconChildOptions = [
+  { value: 'aluminium', label: 'Aluminium' },
+  { value: 'titantium', label: 'titantium' }
+]
+
+export const sizeIconChildOptions = [
+  { value: '42mm', label: '42mm' , scaleClass:'scale-50' , scale : 0.5 },
+  { value: '46mm', label: '46mm', scaleClass : '' , scale : 1 },
+  { value: '', label: '', scaleClass : '', scale : null  }
+]
