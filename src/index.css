@@ -5,6 +5,14 @@
 
 /* from apple website need to be cleaned */
 
+.typography-body {
+  font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -.022em;
+  line-height: 1.4705882353;
+}
+
 /*! 3.6.0 | BH: ce9f8a3a955da9c54c6e | CH: e28fa5b7 */
 [data-dcm-tabs-content] {
   min-height: 500px;

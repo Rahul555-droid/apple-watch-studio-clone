@@ -20,10 +20,9 @@ export const watchCases = [
     isChecked: false
   },
   {
-    alt: '46mm Gold Titanium Case with Black Solo Loop Front view',
-    src: 'https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/watch-case-46-titanium-gold-cell-s10_VW_PF+watch-face-46-titanium-gold-s10_VW_PF?wid=1000&amp;hei=1000&amp;fmt=png-alpha&amp;.v=VkZ1UEhBSWJYcW8vU2JKY0dsSEFqa2NVRDBtRHBIdlNvZFpvSFN3SFNrVXlKN3h2cmJhZy9Wa2xIdm9lcGFpb285ZnlFYUluNlVpdEVDTlo4UFJtQnVWV3Bsak5WR3RZeXgwZTJxZ1FBQWQwSlB5Y0tYeFR4NmNmOHFJRDcxcndnMGFEVEZmOEhmU2pqOEg4YzFCZjdUYVhFbmVlOVBZQVJ6YVVMREY4VVdDSkxMYjhBbEZsbUNjbmtLUUgvNzJC',
-    isChecked: false
-  }
+    alt: '',
+    src: ''
+  },
 ]
 
 export const bandCases = [
@@ -226,5 +225,15 @@ export const bandCases = [
   {
     alt: '46mm Jet Black Aluminum Case with Blue Flame Nike Sport Band Front view',
     src: 'https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MYLA3ref_SR_S10_VW_PF?wid=1000&hei=1000&fmt=p-jpg&qlt=95&.v=OU54bUgybU0vcHdWWFY2Ky9xS1pyenVkcStXUmxwTmtpV2dxUWV1ZU5xeXkvYVhHUzZnbTdlRlQ4aGhRUUYyVXZ6RVMwQXJHUjF3MlcvZ3RFeXhMRHlGQWdsRTZ5b1NPWGg0L2sxL1grWFk'
+  },
+  {
+    alt: '',
+    src: ''
   }
 ]
+
+export const collections = [
+  "Apple Watch Series 10",
+  "Apple Watch Hermès Series 10",
+  "Apple Watch SE"
+];
