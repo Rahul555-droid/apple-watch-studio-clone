@@ -257,7 +257,7 @@ export const caseIconChildOptions = [
 ]
 
 export const sizeIconChildOptions = [
-  { value: '42mm', label: '42mm' , scaleClass:'scale-50' , scale : 0.5 },
+  { value: '42mm', label: '42mm' , scaleClass:'scale-75' , scale : 0.75 },
   { value: '46mm', label: '46mm', scaleClass : '' , scale : 1 },
   { value: '', label: '', scaleClass : '', scale : null  }
 ]
