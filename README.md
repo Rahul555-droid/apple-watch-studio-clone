@@ -1,5 +1,6 @@
 
-# Apple Watch Studio Clone : https://apple-watch-studio-clone-lac.vercel.app/
+# Apple Watch Studio Clone : 
+https://apple-watch-studio-clone-lac.vercel.app/
 
 This project is a dynamic watch selector built using **Next.js** and **React**, enabling users to browse through various watch collections and customize their watch based on case, band, size, and more. The app allows real-time updates of the user's selection and reflects these changes both in the UI and in the URL. It also includes features like pre-rendering, SSR, and dynamic image rendering for a smooth user experience.
 
