@@ -1,4 +1,10 @@
-function CollectionsDropdown({ collections = [], handleClose = () => {} }) {
+function CollectionsDropdown({
+  collections = [],
+  handleClose = () => {},
+  handleClick = () => {},
+  currentCollectionIndex
+}) {
+
   return (
     <div
       data-core-fade-transition-wrapper=""
@@ -7,12 +13,7 @@ function CollectionsDropdown({ collections = [], handleClose = () => {} }) {
       data-core-overlay-cover=""
       onClick={handleClose}
     >
-      <div
-        data-core-overlay-content=""
-        tabIndex="-1"
-        role="dialog"
-        aria-modal="true"
-      >
+      <div data-core-overlay-content="" tabIndex="-1" aria-modal="true">
         <div className="rc-overlay-popup-outer">
           <div className="rc-overlay-popup-content">
             <div>
@@ -26,10 +27,11 @@ function CollectionsDropdown({ collections = [], handleClose = () => {} }) {
                     <button
                       type="button"
                       data-index={index}
-                      className="rc-menu-item rf-designstudio-collection typography-body"
+                      className={`rc-menu-item rf-designstudio-collection typography-body ${currentCollectionIndex == index ? '!text-gray-500' : ''} `}
                       data-autom={collection}
+                      onClick={handleClick}
                     >
-                      {collection}
+                      {collection.label}
                     </button>
                   </li>
                 ))}
@@ -39,7 +41,7 @@ function CollectionsDropdown({ collections = [], handleClose = () => {} }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default CollectionsDropdown
+export default CollectionsDropdown;

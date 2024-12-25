@@ -3,6 +3,19 @@
 @tailwind utilities;
 
 
+body {
+  transition-property: opacity, transform, filter, background;
+  transition-timing-function: ease-in-out;
+  transition-duration: 200ms;
+}
+
+.page-transition {
+  opacity: 0;
+  background:grey;
+  transform: translateY(40px);
+  filter: blur(12px);
+}
+
 /* from apple website need to be cleaned */
 
 .typography-body {
@@ -2169,7 +2182,7 @@ html[dir=rtl] {
   height: 53vh;
   max-height: 29.8823529412rem;
   min-height: 18.4705882353rem;
-  transform: translateY(32rem) scale(2)
+  transform: translateY(13rem) scale(2)
 }
 
 @media only screen and (min-device-width: 768px)and (max-device-width:1024px) {

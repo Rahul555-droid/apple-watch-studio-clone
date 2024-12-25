@@ -1,14 +1,74 @@
 "use client";
 import CollectionsDropdown from "@/components/CollectionsDropdown";
 import DynamicScrollerGrid from "@/components/DynamicScrollerGrid";
-import PrevNextButton from "@/components/PrevNextButton";
-import {
-  collections
-} from "@/constants";
-import { useState } from "react";
+import ShareModal from "./ShareModal";
+import { collections } from "@/constants";
+import { useEffect, useMemo, useState } from "react";
+import { FiChevronDown } from "react-icons/fi";
+
+//params should be stored on top anyways even when manually scrolling
+
+// useEffect(() => {
+//   const params = new URLSearchParams(window.location.search);
+//   setCurrentCollectionIndex(Number(params.get("collection")) || 0);
+//   setSelectedCaseIndex(Number(params.get("caseIndex")) || 0);
+//   setSelectedBandIndex(Number(params.get("bandIndex")) || 0);
+//   setSelectedSizeIndex(Number(params.get("sizeIndex")) || 1);
+//   setMode(params.get("mode") || "case");
+// }, []);
 
 function Selector() {
+  const params = new URLSearchParams(window.location.search);
+
   const [showOtherCollections, setShowOtherCollections] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Modal state
+
+  const [currentCollectionIndex, setCurrentCollectionIndex] = useState(
+    Number(params.get("collection")) || 0
+  );
+  const [selectedCaseIndex, setSelectedCaseIndex] = useState(
+    Number(params.get("caseIndex")) || 0
+  );
+  const [selectedBandIndex, setSelectedBandIndex] = useState(
+    Number(params.get("bandIndex")) || 0
+  );
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState(
+    Number(params.get("sizeIndex"))
+  ); //at 46mm
+  const [mode, setMode] = useState(params.get("mode") || "case"); // 'case', 'band', or 'size'
+
+  const [currentCollectionlabel, currentCollectionOptions] = useMemo(
+    () => [
+      collections[currentCollectionIndex]?.label || "",
+      collections[currentCollectionIndex]?.options || null,
+    ],
+    [currentCollectionIndex]
+  );
+
+  const handleCollectionClick = (event) => {
+    const index = event.currentTarget.getAttribute("data-index");
+    setSelectedBandIndex(0);
+    setSelectedCaseIndex(0);
+    setMode("case");
+    setCurrentCollectionIndex(index);
+  };
+
+  // Sync state to URL on state changes
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("collection", currentCollectionIndex);
+    url.searchParams.set("caseIndex", selectedCaseIndex);
+    url.searchParams.set("bandIndex", selectedBandIndex);
+    url.searchParams.set("sizeIndex", selectedSizeIndex);
+    url.searchParams.set("mode", mode);
+    window.history.replaceState(null, "", url.toString());
+  }, [
+    currentCollectionIndex,
+    selectedCaseIndex,
+    selectedBandIndex,
+    selectedSizeIndex,
+    mode,
+  ]);
 
   return (
     <>
@@ -16,6 +76,8 @@ function Selector() {
         <CollectionsDropdown
           collections={collections}
           handleClose={() => setShowOtherCollections(false)}
+          handleClick={handleCollectionClick}
+          currentCollectionIndex={currentCollectionIndex}
         />
       )}
 
@@ -31,29 +93,53 @@ function Selector() {
 
               <button type="button">
                 <div
-                  className="rf-designstudio-collectionlbl typography-body"
+                  className="rf-designstudio-collectionlbl typography-body ml-20"
                   data-autom="Collections"
-                  onClick={() => setShowOtherCollections(true)}
+                  onClick={setShowOtherCollections}
                 >
-                  Collections v{" "}
-                  <span className="visuallyhidden">Apple Watch</span>
-                  <span className="icon icon-after icon-chevrondown"></span>
+                  Collections
+                  <FiChevronDown
+                    style={{ display: "inline", verticalAlign: "middle" }}
+                  />
                 </div>
               </button>
 
               <button
                 className={`px-4 py-2 rounded-3xl bg-blue-500 text-white`}
-                onClick={() => alert("save")}
+                onClick={() => setShowModal(true)}
               >
                 Save
               </button>
             </div>
 
-            <DynamicScrollerGrid />
-            <PrevNextButton />
+            <DynamicScrollerGrid
+              bandCases={currentCollectionOptions.bandCases}
+              watchCases={currentCollectionOptions.watchCases}
+              bandIconChildOptions={
+                currentCollectionOptions.bandIconChildOptions
+              }
+              caseIconChildOptions={
+                currentCollectionOptions.caseIconChildOptions
+              }
+              //had to send as props and didn't want to use redux or context in a small project
+              {...{
+                selectedCaseIndex,
+                setSelectedCaseIndex,
+                selectedBandIndex,
+                setSelectedBandIndex,
+                selectedSizeIndex,
+                setSelectedSizeIndex,
+                mode,
+                setMode,
+                currentCollectionlabel,
+              }}
+            />
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {showModal && <ShareModal setShowModal={setShowModal} />}
     </>
   );
 }

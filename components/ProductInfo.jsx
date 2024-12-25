@@ -1,4 +1,4 @@
-export default function ProductInfo() {
+export default function ProductInfo({collectionLabel ='' , sizeLabel = '' , caseLabel = '' , bandLabel = '' }) {
     return (
       <div className="flex justify-center text-center scale-y-90">
         <div className="text-center">
@@ -15,13 +15,13 @@ export default function ProductInfo() {
               className="rf-designstudio-productcollection typography-caption text-center mb-0 mt-0"
               data-autom="productCollection"
             >
-              APPLE WATCH SERIES 10
+              {collectionLabel}
             </div>
             <div
               className="rf-designstudio-producttitle typography-body-reduced text-center mb-0 mt-0"
               data-autom="productTitle-applewatch"
             >
-              46mm Jet Black Aluminum Case with Black Solo Loop
+              {sizeLabel} {caseLabel} with {bandLabel}
             </div>
             <div
               className="rf-designstudio-productprice typography-body-reduced text-center"

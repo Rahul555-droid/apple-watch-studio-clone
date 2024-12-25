@@ -7,6 +7,11 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    'scale-75',  // Add your dynamic classes here
+    'flex',
+    'items-center'
+  ],
   theme: {
     extend: {
       colors: {

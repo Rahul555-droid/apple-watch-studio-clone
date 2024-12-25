@@ -1,11 +1,12 @@
 // Header Component
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => (
 
   <div className="rf-designstudio-title">
-    <a
-      href="/shop/buy-watch/apple-watch"
+    <Link
+      href="/"
       data-slot-name="designStudioAssets"
       data-feature-name="Astro Link"
       data-display-name="AOS: home/shop_watch/family/apple_watch"
@@ -18,7 +19,7 @@ const Header = () => (
         height={26}
         className="ir"
       />
-    </a>
+    </Link>
   </div>
 )
 

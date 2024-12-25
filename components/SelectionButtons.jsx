@@ -1,37 +1,52 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-function FilterButton({ icon, label, dataAutom, options, handleClick }) {
-  const [isExpanded, setIsExpanded] = useState(false)
+function FilterButton({
+  icon,
+  label,
+  dataAutom,
+  options,
+  handleClick,
+  isActive,
+  changeIndex,
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded)
-    if (handleClick) {
-      handleClick()
+    if (!isExpanded) setIsExpanded(true);
+
+    if (handleClick && typeof handleClick === "function") {
+      handleClick();
     }
-  }
+  };
+
+  const handleClickExpanded = (event) => {
+    const index = event.currentTarget.getAttribute("data-value");
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (changeIndex && typeof changeIndex === "function") {
+      changeIndex(index);
+    }
+  };
 
   return (
     <div
-      className={`button button-secondary-alpha rf-designstudio-filter typography-body button-elevated ${
-        isExpanded ? 'rf-designstudio-filter-expanded' : ''
+      className={`button !flex items-center button-secondary-alpha rf-designstudio-filter typography-body button-elevated ${
+        isExpanded && isActive ? "rf-designstudio-filter-expanded" : ""
       }`}
+      onClick={toggleExpand}
     >
-      <div
-        className="rf-designstudio-filter-icon"
-        aria-hidden="true"
-        onClick={toggleExpand}
-      >
+      <div className="rf-designstudio-filter-icon" aria-hidden="true">
         {icon}
       </div>
       <button
         className="button button-secondary-alpha rf-designstudio-filter-header typography-body button-elevated"
         data-autom={dataAutom}
         type="button"
-        onClick={toggleExpand}
       >
         {label}
       </button>
-      {isExpanded && options && (
+      {isExpanded && options && isActive && (
         <fieldset className="rf-designstudio-filterdim">
           <legend className="a11y">{label}</legend>
           <ul
@@ -39,7 +54,11 @@ function FilterButton({ icon, label, dataAutom, options, handleClick }) {
             data-autom="filterDimOptions"
           >
             {options.map((option, index) => (
-              <li key={index}>
+              <li
+                key={index}
+                data-value={option.value}
+                onClick={handleClickExpanded}
+              >
                 <input
                   type="radio"
                   id={`rf-designstudio-filterdim-${dataAutom}-${option.value}`}
@@ -49,7 +68,7 @@ function FilterButton({ icon, label, dataAutom, options, handleClick }) {
                 <label
                   htmlFor={`rf-designstudio-filterdim-${dataAutom}-${option.value}`}
                   className={`rf-designstudio-filterdim-label ${
-                    option.selected ? 'rf-designstudio-filterdim-selected' : ''
+                    option.selected ? "rf-designstudio-filterdim-selected" : ""
                   }`}
                   data-autom={`${dataAutom}-${index + 1}`}
                 >
@@ -61,12 +80,18 @@ function FilterButton({ icon, label, dataAutom, options, handleClick }) {
         </fieldset>
       )}
     </div>
-  )
+  );
 }
 
-export default function SelectionButtons({ buttonsData = [] }) {
+export default function SelectionButtons({
+  buttonsData = [],
+  className = "",
+  changeIndex = () => {},
+}) {
   return (
-    <div className="rf-designstudio-filters rf-designstudio-filters-scroll">
+    <div
+      className={`rf-designstudio-filters rf-designstudio-filters-scroll ${className}`}
+    >
       <div
         aria-hidden="false"
         role="group"
@@ -81,9 +106,11 @@ export default function SelectionButtons({ buttonsData = [] }) {
             dataAutom={button.dataAutom}
             options={button.options}
             handleClick={button.handleClick}
+            isActive={button.isActive}
+            changeIndex={changeIndex}
           />
         ))}
       </div>
     </div>
-  )
+  );
 }
