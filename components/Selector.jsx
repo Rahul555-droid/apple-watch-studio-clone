@@ -3,39 +3,34 @@ import CollectionsDropdown from "@/components/CollectionsDropdown";
 import DynamicScrollerGrid from "@/components/DynamicScrollerGrid";
 import ShareModal from "./ShareModal";
 import { collections } from "@/constants";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
-
-//params should be stored on top anyways even when manually scrolling
-
-// useEffect(() => {
-//   const params = new URLSearchParams(window.location.search);
-//   setCurrentCollectionIndex(Number(params.get("collection")) || 0);
-//   setSelectedCaseIndex(Number(params.get("caseIndex")) || 0);
-//   setSelectedBandIndex(Number(params.get("bandIndex")) || 0);
-//   setSelectedSizeIndex(Number(params.get("sizeIndex")) || 1);
-//   setMode(params.get("mode") || "case");
-// }, []);
+import {
+  encodeToBase64,
+  decodeFromBase64,
+  getParamFromURL,
+  updateURLWithParams,
+} from "../utils";
+import debounce from "lodash.debounce"; // Import debounce from lodash
 
 function Selector() {
-  const params = new URLSearchParams(window.location.search);
-
   const [showOtherCollections, setShowOtherCollections] = useState(false);
   const [showModal, setShowModal] = useState(false); // Modal state
 
+  // Fetch and decode parameters from URL
   const [currentCollectionIndex, setCurrentCollectionIndex] = useState(
-    Number(params.get("collection")) || 0
+    getParamFromURL("collection", 0)
   );
   const [selectedCaseIndex, setSelectedCaseIndex] = useState(
-    Number(params.get("caseIndex")) || 0
+    getParamFromURL("case", 0)
   );
   const [selectedBandIndex, setSelectedBandIndex] = useState(
-    Number(params.get("bandIndex")) || 0
+    getParamFromURL("band", 0)
   );
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(
-    Number(params.get("sizeIndex"))
-  ); //at 46mm
-  const [mode, setMode] = useState(params.get("mode") || "case"); // 'case', 'band', or 'size'
+    getParamFromURL("size", 1)
+  );
+  const [mode, setMode] = useState(getParamFromURL("mode", "case"));
 
   const [currentCollectionlabel, currentCollectionOptions] = useMemo(
     () => [
@@ -53,21 +48,32 @@ function Selector() {
     setCurrentCollectionIndex(index);
   };
 
-  // Sync state to URL on state changes
+  // Create a debounced version of updateURLWithParams
+  const debouncedUpdateURL = useCallback(
+    debounce((params) => {
+      updateURLWithParams(params);
+    }, 500), // 500ms debounce delay (adjust as needed)
+    []
+  );
+
+  // Sync state to URL with Base64 encoding on state changes (debounced)
   useEffect(() => {
-    const url = new URL(window.location.href);
-    url.searchParams.set("collection", currentCollectionIndex);
-    url.searchParams.set("caseIndex", selectedCaseIndex);
-    url.searchParams.set("bandIndex", selectedBandIndex);
-    url.searchParams.set("sizeIndex", selectedSizeIndex);
-    url.searchParams.set("mode", mode);
-    window.history.replaceState(null, "", url.toString());
+    const params = {
+      collection: currentCollectionIndex,
+      case: selectedCaseIndex,
+      band: selectedBandIndex,
+      size: selectedSizeIndex,
+      mode: mode,
+    };
+
+    debouncedUpdateURL(params); // Call the debounced URL update function
   }, [
     currentCollectionIndex,
     selectedCaseIndex,
     selectedBandIndex,
     selectedSizeIndex,
     mode,
+    debouncedUpdateURL,
   ]);
 
   return (

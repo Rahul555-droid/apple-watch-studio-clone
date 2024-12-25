@@ -1,4 +1,4 @@
-export default function ProductInfo({collectionLabel ='' , sizeLabel = '' , caseLabel = '' , bandLabel = '' }) {
+export default function ProductInfo({collectionLabel ='' , sizeLabel = '' , caseLabel = '' , bandLabel = '' , total = 0}) {
     return (
       <div className="flex justify-center text-center scale-y-90">
         <div className="text-center">
@@ -28,7 +28,7 @@ export default function ProductInfo({collectionLabel ='' , sizeLabel = '' , case
               data-autom="designStudioPrice-applewatch"
             >
               <div className="rf-designstudio-pricepoint-fullPrice-comparative text-center mb-0 mt-0">
-                From <span className="nowrap">$429</span>
+                <span className="nowrap">${total }</span>
               </div>
               <div className="rf-designstudio-pricepoint-acmiPrice-comparative mb-0 mt-0"></div>
             </div>

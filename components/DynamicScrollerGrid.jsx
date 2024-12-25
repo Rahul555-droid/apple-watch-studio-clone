@@ -40,6 +40,8 @@ export default function DynamicScrollerGrid({
     [selectedSizeIndex, sizeIconChildOptions]
   );
 
+  const totalPrice = useMemo(()=> selectedBand.amount + selectedCase.amount , [selectedBand , selectedCase , ])
+
   const buttonsData = useMemo(
     () =>
       [
@@ -116,8 +118,10 @@ export default function DynamicScrollerGrid({
 
   const changeIndexOfCurrentScrollWithRefresh = (callbackOrValue) => {
     //setState callback or normal value
+    // setIsAnimating(true);
     scrollerData.setSelectedIndex(callbackOrValue);
     setRefresh((prev) => !prev);
+    // setTimeout(() => setIsAnimating(false), 500);
   };
 
   const handlePrevNext = (event) => {
@@ -217,6 +221,8 @@ export default function DynamicScrollerGrid({
                             alt={item.alt}
                             src={item.src}
                             className={`rf-designstudio-bottomimage ${scrollerData.imageClass} ${selectedScaleClass}`}
+                            loading="eager"
+
                           />
                         ) : (
                           <div></div>
@@ -238,6 +244,8 @@ export default function DynamicScrollerGrid({
                               src={selectedCase.src}
                               className="rf-designstudio-topimage rf-designstudio-caseimage"
                               aria-hidden="true"
+                              loading="eager"
+
                             />
                             <Image
                               width="500"
@@ -246,6 +254,8 @@ export default function DynamicScrollerGrid({
                               src={selectedBand.src}
                               className="rf-designstudio-bottomimage rf-designstudio-bandimage"
                               aria-hidden="true"
+                              loading="eager"
+
                             />
                           </>
                         ) : (
@@ -279,6 +289,8 @@ export default function DynamicScrollerGrid({
                 width="500"
                 height="500"
                 src={mode === "case" ? selectedBand.src : selectedCase.src}
+                loading="eager"
+
               />
             </div>
           )}
@@ -289,6 +301,7 @@ export default function DynamicScrollerGrid({
           caseLabel={selectedCase.alt}
           bandLabel={selectedBand.alt}
           sizeLabel={sizeLabel}
+          total={totalPrice}
         />
 
         <SelectionButtons
@@ -298,7 +311,7 @@ export default function DynamicScrollerGrid({
         />
       </div>
 
-      <PrevNextButton handlePrevNext={handlePrevNext} />
+      <PrevNextButton handlePrevNext={handlePrevNext} selectedIndex = {scrollerData.selectedIndex} />
     </>
   );
 }

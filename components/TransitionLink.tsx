@@ -12,6 +12,7 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+//custom link for page change animation
 export const TransitionLink: React.FC<TransitionLinkProps> = ({
   children,
   href,

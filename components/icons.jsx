@@ -1,3 +1,5 @@
+//svg icons that were on apple website
+
 export const sizeIcon = (
     <svg
       height="25"
