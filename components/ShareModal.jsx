@@ -1,7 +1,11 @@
 import html2canvas from "html2canvas";
+import useIsClient from "../hooks/useIsClient";
 
 export default function ShareModal({ setShowModal }) {
+  const isClient = useIsClient(); // the hook to check if we are on the client side
+
   const handleCopyURL = () => {
+    if(!isClient) return;
     const currentURL = window.location.href;
     navigator.clipboard.writeText(currentURL).then(() => {
       alert("URL copied to clipboard!");
@@ -29,7 +33,6 @@ export default function ShareModal({ setShowModal }) {
       alert("No matching element found!"); // Replace with toast notification
     }
   };
-
 
   return (
     <div

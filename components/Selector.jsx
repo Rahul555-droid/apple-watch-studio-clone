@@ -1,36 +1,36 @@
 "use client";
 import CollectionsDropdown from "@/components/CollectionsDropdown";
 import DynamicScrollerGrid from "@/components/DynamicScrollerGrid";
-import ShareModal from "./ShareModal";
 import { collections } from "@/constants";
+import debounce from "lodash.debounce"; // Import debounce from lodash
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
-import {
-  encodeToBase64,
-  decodeFromBase64,
-  getParamFromURL,
-  updateURLWithParams,
-} from "../utils";
-import debounce from "lodash.debounce"; // Import debounce from lodash
+import { getParamFromURL, updateURLWithParams } from "../utils";
+import ShareModal from "./ShareModal";
+import useIsClient from "../hooks/useIsClient";
 
 function Selector() {
+  const isClient = useIsClient(); // Check if we are on the client-side
+
   const [showOtherCollections, setShowOtherCollections] = useState(false);
   const [showModal, setShowModal] = useState(false); // Modal state
 
   // Fetch and decode parameters from URL
   const [currentCollectionIndex, setCurrentCollectionIndex] = useState(
-    getParamFromURL("collection", 0)
+    isClient ? getParamFromURL("collection", 0) : 0
   );
   const [selectedCaseIndex, setSelectedCaseIndex] = useState(
-    getParamFromURL("case", 0)
+    isClient ? getParamFromURL("case", 0) : 0
   );
   const [selectedBandIndex, setSelectedBandIndex] = useState(
-    getParamFromURL("band", 0)
+    isClient ? getParamFromURL("band", 0) : 0
   );
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(
-    getParamFromURL("size", 1)
+    isClient ? getParamFromURL("size", 1) : 0
   );
-  const [mode, setMode] = useState(getParamFromURL("mode", "case"));
+  const [mode, setMode] = useState(
+    isClient ? getParamFromURL("mode", "case") : 0
+  );
 
   const [currentCollectionlabel, currentCollectionOptions] = useMemo(
     () => [
@@ -58,6 +58,7 @@ function Selector() {
 
   // Sync state to URL with Base64 encoding on state changes (debounced)
   useEffect(() => {
+    if (!isClient) return;
     const params = {
       collection: currentCollectionIndex,
       case: selectedCaseIndex,
@@ -74,6 +75,7 @@ function Selector() {
     selectedSizeIndex,
     mode,
     debouncedUpdateURL,
+    isClient,
   ]);
 
   return (
