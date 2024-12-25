@@ -2105,10 +2105,10 @@ html[dir=rtl] {
   outline: none
 }
 
-.button-spinner:before:focus[data-focus-method=key],html.as-keyboarduser .button-spinner:before:focus {
+/* .button-spinner:before:focus[data-focus-method=key],html.as-keyboarduser .button-spinner:before:focus {
   outline: 2px solid var(--sk-focus-color,#0071e3);
   outline-offset: 3px
-}
+} */
 
 .button-spinner.button-secondary:not(:hover):before {
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22rgba%280%2C0%2C0%2C0%29%22%20style%3D%22%22%3E%3Cpath%20stroke%3D%22rgb%280%2C102%2C204%29%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20d%3D%22M14.997%204.583a8%208%200%201%200%204.828%205.754%22%2F%3E%3C%2Fsvg%3E");
