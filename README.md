@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+# Apple Watch Studio Clone : https://apple-watch-studio-clone-lac.vercel.app/
+
+This project is a dynamic watch selector built using **Next.js** and **React**, enabling users to browse through various watch collections and customize their watch based on case, band, size, and more. The app allows real-time updates of the user's selection and reflects these changes both in the UI and in the URL. It also includes features like pre-rendering, SSR, and dynamic image rendering for a smooth user experience.
+
+## Features
+
+- **Landing Page** : Added a landing page with a page transition /animation
+- **Dynamic Collection Selection**: Users can choose different watch collections from a dropdown menu.
+- **Customizable Watch**: Users can customize the watch by selecting different cases, bands, and sizes.
+- **Debounced URL Syncing**: Automatically updates the URL with user selections and preserves state between page loads. So if you refresh the page you will not loose your config.
+- **Image Previews**: Displays images dynamically based on the user's customization choices.
+- **Modal Popup**: A modal to save or share the current selection. You can download image of your configuration or copy a share link to share.
+- **Responsive Layout**: Ensures a smooth user experience across devices.
+- **Pre rendered and SSR** : Thanks to next.js this app supports SSR and prerendering and can be really performant.
+- **Images from Apple's CDN and CSS**: Images are dynamically fetched via scraping and reverse-engineering Apple’s website for their CDN links of images and applicable CSS
+-  **Proper Constants for labeling Total Calculation** : There was a lot of data on apple's website rather than studying their website and API , I made my own "constants" that provide me with the relevant information
 
 ## Getting Started
 
-First, run the development server:
+To set up this project locally, follow these steps:
+
+### Prerequisites
+
+- Node.js (version 18 or higher)
+- NPM or Yarn
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Rahul555-droid/apple-watch-studio-clone.git
+```
+
+2. Navigate to the project directory:
+
+```bash
+cd apple-watch-studio-clone
+```
+
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+or if using Yarn:
+
+```bash
+yarn install
+```
+
+### Running the Development Server
+
+To start the development server, run:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+or if using Yarn:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The app will be available at [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+/components
+/constants
+/hooks
+/app
+/utils
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technologies Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Next.js**: React framework for building the application.
+- **React**: JavaScript library for building the UI components.
+- **Tailwind CSS**: For styling the components and creating a responsive design.
+- **Lodash**: For debouncing the URL updates.
+- **React Icons**: For displaying icons in the UI.
+- **Image scraping**: Scraping the Apple website to fetch images for watch cases, bands, and sizes.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
