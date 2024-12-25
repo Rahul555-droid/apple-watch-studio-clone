@@ -16,21 +16,21 @@ function Selector() {
   const [showModal, setShowModal] = useState(false); // Modal state
 
   // Fetch and decode parameters from URL
-  const [currentCollectionIndex, setCurrentCollectionIndex] = useState(
-    isClient ? getParamFromURL("collection", 0) : 0
-  );
-  const [selectedCaseIndex, setSelectedCaseIndex] = useState(
-    isClient ? getParamFromURL("case", 0) : 0
-  );
-  const [selectedBandIndex, setSelectedBandIndex] = useState(
-    isClient ? getParamFromURL("band", 0) : 0
-  );
-  const [selectedSizeIndex, setSelectedSizeIndex] = useState(
-    isClient ? getParamFromURL("size", 1) : 0
-  );
-  const [mode, setMode] = useState(
-    isClient ? getParamFromURL("mode", "case") : 0
-  );
+  const [currentCollectionIndex, setCurrentCollectionIndex] = useState(0);
+  const [selectedCaseIndex, setSelectedCaseIndex] = useState(0);
+  const [selectedBandIndex, setSelectedBandIndex] = useState(0);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState(1);
+  const [mode, setMode] = useState("case");
+
+  useEffect(() => {
+    if (isClient) {
+      setCurrentCollectionIndex(getParamFromURL("collection", 0));
+      setSelectedCaseIndex(getParamFromURL("case", 0));
+      setSelectedBandIndex(getParamFromURL("band", 0));
+      setSelectedSizeIndex(getParamFromURL("size", 1));
+      setMode(getParamFromURL("mode", "case"));
+    }
+  }, [isClient]); // Run this effect once the component is mounted on client
 
   const [currentCollectionlabel, currentCollectionOptions] = useMemo(
     () => [

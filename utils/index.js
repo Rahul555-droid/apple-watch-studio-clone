@@ -5,7 +5,9 @@ export const decodeFromBase64 = (encodedValue) => atob(encodedValue);
 // Helper function to get the query parameter from the URL, decode it, or return a default value
 export const getParamFromURL = (param, defaultValue) => {
   const paramValue = new URLSearchParams(window.location.search).get(param);
-  return paramValue ? decodeFromBase64(paramValue) : defaultValue;
+  const value = paramValue ? decodeFromBase64(paramValue) : defaultValue
+  console.log({param , value})
+  return value;
 };
 
 // Helper function to update the URL with Base64 encoded params
