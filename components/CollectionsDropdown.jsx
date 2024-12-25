@@ -1,5 +1,3 @@
-import React from 'react'
-
 function CollectionsDropdown({ collections = [], handleClose = () => {} }) {
   return (
     <div
@@ -11,7 +9,7 @@ function CollectionsDropdown({ collections = [], handleClose = () => {} }) {
     >
       <div
         data-core-overlay-content=""
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-modal="true"
       >
